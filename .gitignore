@@ -1,0 +1,17 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Node / Python (if ever used)
+node_modules/
+dist/
+__pycache__/
+
+# Environments
+.env
+.env.*
+env/.env
+*.local
+
+# n8n exports can be big; keep only the final JSON
+workflow/*.backup.json
