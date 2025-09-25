@@ -69,7 +69,9 @@ driver-expenses-bot/
 │       ├── ai_agent_output.jpg
 │       ├── ai_agent_prompt.jpg
 │       ├── json_output_clarification.jpg
-│       ├── Google_Sheets_data.PNG
+│       ├── google_sheets_data.png
+│       ├── telegram_interaction.png
+│       ├── n8n_workflow.jpg
 │       └── telegram_clarification.jpg
 ├── tools/
 │   └── plantuml.jar                   # optional, for UML rendering
