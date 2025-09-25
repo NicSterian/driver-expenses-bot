@@ -50,7 +50,7 @@ Return **only** this JSON object (no code fences, no commentary):
   "date_iso": "YYYY-MM-DD",
   "personal_or_business": "Personal or Business",
   "description": "short text",
-  "amount_gbp": 0,
+  "amount_gbp": <number or null>,
   "type": "One of the allowed values above",
   "needs_clarification": false,
   "clarification_question": null
