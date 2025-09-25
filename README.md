@@ -18,8 +18,6 @@ Telegram → n8n (Trigger)
 ├─ yes → Telegram (ask) ⟂
 └─ no → Google Sheets (append) → Telegram (confirm)
 
-markdown
-Copy code
 
 **Stack**
 
@@ -52,8 +50,6 @@ Copy code
 ├─ parking_missing_amount.in.txt
 └─ parking_missing_amount.out.json
 
-markdown
-Copy code
 
 ## Prerequisites
 
