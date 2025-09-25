@@ -19,8 +19,6 @@ Telegram → n8n (Trigger) → AI Agent (OpenAI) → Code (validate/normalize)
 → IF (needs_clarification?) ├─ yes → Telegram (ask)
 └─ no → Google Sheets (append) → Telegram (confirm)
 
-yaml
-Copy code
 
 👉 See [`docs/architecture.md`](docs/architecture.md) for full **PlantUML diagrams** and **data model**.
 
@@ -74,8 +72,6 @@ driver-expenses-bot/
 ├── tools/
 │ └── plantuml.jar # optional CLI rendering
 
-yaml
-Copy code
 
 ---
 
@@ -99,8 +95,6 @@ Copy code
 
 Date (ISO) | Personal/Business | Description | Amount (GBP) | Type
 
-yaml
-Copy code
 
 ✅ Or import `docs/sample-sheet.csv` as a template.
 
