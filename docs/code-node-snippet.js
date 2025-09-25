@@ -41,6 +41,7 @@ const safeDate =
 // Amount: keep null if AI couldn't parse; otherwise round to 2 dp
 let amount = parsed.amount_gbp;
 if (amount === 0 && !/(^|[^0-9])0([^0-9]|$)/.test(userText)) {
+  // If 0 wasn't explicitly typed, prefer null (forces clarification)
   amount = null;
 }
 if (typeof amount === "string" && amount.trim() === "") amount = null;
@@ -56,15 +57,15 @@ if (typeof pob === "string") {
   const t = pob.trim().toLowerCase();
   if (t.startsWith("b")) pob = "Business";
   else if (t.startsWith("p")) pob = "Personal";
-  else pob = "Business";
+  else pob = "Business"; // fallback
 } else {
   pob = "Business";
 }
 
-// Type – pass through; empty string -> "Other"
+// Type – pass through (AI guarantees allowed set); empty string -> "Other"
 const type = (parsed.type ?? "").trim() || "Other";
 
-// Needs clarification
+// Needs clarification flag should reflect amount null or AI's own signal
 const needs =
   Boolean(parsed.needs_clarification) ||
   amount === null ||
@@ -72,7 +73,7 @@ const needs =
   !pob ||
   !safeDate;
 
-// Question – prefer AI’s, otherwise default
+// Question – prefer AI’s, otherwise a sensible default
 const question =
   parsed.clarification_question ??
   (amount === null ? "What was the amount (GBP)?" : null);
@@ -86,7 +87,7 @@ return [
       date_iso: safeDate,
       personal_or_business: pob,
       description: (parsed.description ?? userText ?? "").trim(),
-      amount_gbp: amount,
+      amount_gbp: amount,                 // <-- stays null if unknown
       currency: "GBP",
       type,
       needs_clarification: needs,
