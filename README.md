@@ -27,28 +27,7 @@ Telegram → n8n (Trigger)
 - Google Sheets API – storage  
 - Google Cloud VM (Ubuntu) – where n8n runs
 
-## What’s in this repo
-
-.
-├─ README.md
-├─ .gitignore
-├─ env/
-│ └─ .env.example
-├─ prompts/
-│ ├─ ai-agent-system.md
-│ └─ expense.schema.json
-├─ workflow/
-│ └─ driver-expenses-bot.json # export your n8n workflow here
-├─ docs/
-│ ├─ code-node-snippet.js
-│ ├─ sample-sheet.csv
-│ └─ screenshots/ # PNG/JPG of key steps
-└─ tests/
-└─ fixtures/
-├─ tyres_80.in.txt
-├─ tyres_80.out.json
-├─ parking_missing_amount.in.txt
-└─ parking_missing_amount.out.json
+<pre><code> ## What’s in this repo ``` driver-expenses-bot/ ├── README.md ├── package.json ├── .gitignore ├── env/ │ └── .env.example ├── prompts/ │ ├── ai-agent-system.md │ └── expense.schema.json ├── workflow/ │ └── driver-expenses-bot.json # n8n workflow export ├── tests/ │ ├── validate-fixtures.mjs # AJV validator │ └── fixtures/ │ ├── tyres_80.in.txt │ ├── tyres_80.out.json │ ├── parking_missing_amount.in.txt │ └── parking_missing_amount.out.json ├── docs/ │ ├── architecture.md # diagrams + data model │ ├── code-node-snippet.js # custom JS for n8n │ ├── sample-sheet.csv # sample Google Sheet structure │ ├── diagrams/ # PlantUML source │ │ ├── sequence_happy_path.puml │ │ ├── context_map.puml │ │ └── architecture.puml │ └── screenshots/ # Key screenshots │ ├── Telegram_interaction.png │ ├── json_output_clarification.jpg │ ├── Google_Sheets_data.PNG │ └── ai_agent_output.jpg ├── tools/ │ └── plantuml.jar # for rendering UML from CLI ``` </code></pre>
 
 
 ## Prerequisites
