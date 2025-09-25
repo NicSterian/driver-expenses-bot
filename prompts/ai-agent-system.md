@@ -67,6 +67,10 @@ Always include a complete JSON object each turn, using remembered context to fil
 
 ### env/.env.example
 
+User: "coffee 2.70"
+{"date_iso":"YYYY-MM-DD","personal_or_business":"Personal","description":"Coffee","amount_gbp":2.70,"type":"Personal > Meals","needs_clarification":false,"clarification_question":null}
+
+
 ```bash
 # === Telegram Bot ===
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
