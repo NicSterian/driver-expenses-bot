@@ -205,6 +205,107 @@ To use it:
 
 ---
 
+## 🛠️ Configuration & Deployment Guide
+
+This section explains **how to set up, deploy, and test** the bot end-to-end — whether you're running locally or on a cloud VPS.
+
+---
+
+### 🌐 1. n8n Workflow Import
+
+You can find the exported n8n workflow in:
+
+📂 [`workflow/driver-expenses-bot.json`](workflow/driver-expenses-bot.json)
+
+To use it:
+
+1. Open your **n8n Editor UI**
+2. Click the **hamburger menu (☰)** → **Import Workflow**
+3. Upload the exported JSON file
+4. Paste the JS code from [`docs/code-node-snippet.js`](docs/code-node-snippet.js) into the **Code** node
+
+✅ Make sure your **Telegram**, **OpenAI**, and **Google Sheets** credentials are added under **Credentials** in n8n.
+
+---
+
+### 🤖 2. Telegram Bot Setup
+
+You need a Telegram bot to interact with the automation.
+
+**Steps:**
+
+1. Open Telegram and talk to [@BotFather](https://t.me/BotFather)
+2. Create a new bot and copy the **API token**
+3. In **n8n**, add new Telegram credentials using that token
+4. Start a chat with your bot on Telegram so it can receive messages
+
+---
+
+### 🔑 3. OpenAI API Setup
+
+Used for parsing expense messages like `fuel 40` or `parking`.
+
+**Steps:**
+
+1. Go to [platform.openai.com](https://platform.openai.com/account/api-keys)
+2. Create an API key
+3. Add this key as a credential in **n8n**
+4. It will be used in the **OpenAI** node inside the workflow
+
+---
+
+### 📊 4. Google Sheets API Setup
+
+The expenses are logged to a Google Sheet.
+
+**Steps:**
+
+1. Create a Google Sheet with this header row (Row 1):
+
+   ```text
+   Date (ISO) | Personal/Business | Description | Amount (GBP) | Type
+Go to Google Cloud Console
+
+Create a Service Account with Editor access to Google Sheets
+
+Share the spreadsheet with the service account’s email
+
+Upload your service account JSON key to n8n and create new Google Sheets credentials
+
+✅ Or import docs/sample-sheet.csv as a template.
+
+🖥️ 5. Deployment (Docker + Caddy + VPS)
+This project was deployed on a Google Cloud VM (Ubuntu) using:
+
+Docker Compose – to run n8n
+
+Caddy – as a reverse proxy with auto HTTPS
+
+sslip.io – to create a hostname based on the IP
+
+🔗 Example URL:
+https://35-214-93-205.sslip.io/workflow/zptVWHkZ1Orx69w2
+
+💡 Deployment Alternatives
+Option	Description
+Localhost	Use Docker Compose on your own machine. Access n8n via http://localhost:5678
+Other VPS	Works with DigitalOcean, Hetzner, or any Docker-compatible host
+n8n.cloud	Use the official hosted version of n8n (no need for Docker or servers)
+
+🧪 Local Testing
+If you want to test locally (without full deployment):
+
+Run n8n using Docker:
+
+docker run -it --rm -p 5678:5678 n8nio/n8n
+Use ngrok to expose your port to Telegram:
+
+ngrok http 5678
+Update the Webhook URL in Telegram to use the ngrok HTTPS address
+
+
+---
+
 ## 📄 License
 
 MIT License
