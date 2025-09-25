@@ -88,6 +88,13 @@ If the amount is missing or unparseable, the bot asks one short question (e.g., 
 - **IF node type error** → toggle “Convert types where required”.  
 - **Chat ID missing** → map `{{$json._chat_id}}` from the Code node or `{{$node["Telegram Trigger"].json.message.chat.id}}`.
 
+## Screenshots
+- docs/screenshots/ai_agent_output.jpg  
+- docs/screenshots/ai_agent_prompt.jpg
+- docs/screenshots/json_output_clarification.jpg  
+- docs/screenshots/Google_Sheets_data.PNG
+- docs/screenshots/telegram_clarification.jpg
+
 ## Known Limitations
 
 - Text-only (no receipt images yet).
