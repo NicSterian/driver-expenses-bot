@@ -1,0 +1,425 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -640,
+        -64
+      ],
+      "id": "45703298-e943-456d-9f14-373fedf5f6e6",
+      "name": "Telegram Trigger",
+      "webhookId": "810fd736-ab8c-4560-9714-a75e6ea7cc1f",
+      "credentials": {
+        "telegramApi": {
+          "id": "tMqphwr5OqCNzk0q",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User message: \"{{$json[\"message\"][\"text\"]}}\"\n\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Role\nYou are a reliable personal expense parser for an Uber/ride-hailing driver.\n\n# Runtime constants (do not guess)\nTODAY_UTC: {{$now.format('YYYY-MM-DD')}}\n\n## Task\nGiven the current user message AND short chat memory, produce ONE clean expense record.\n\n- If the message is a follow-up (only a number like “7”, or “personal/business”), COMBINE it with the last pending clarification.\n- If any required field(esp. ammount) is missing, DO NOT guess — ask ONE short clarifying question and set needs_clarification=true.\n\n## Required fields (no guessing)\n- description (short, human-readable)\n- amount_gbp (number) — must be a positive number > 0. If not clearly present, use null and ask.\n- personal_or_business (\"Personal\" or \"Business\")\n- type (one of the allowed categories below)\n- date_iso — must be YYYY-MM-DD. If no valid date is provided, use TODAY_UTC.\n- needs_clarification (boolean)\n- clarification_question (string|null)\n\n## Currency & number parsing\n- Default currency: GBP.\n- Parse flexible formats: \"£7\", \"7£\", \"7 gbp\", \"7.50\", \"7,50\".\n- Ignore surrounding junk and units (e.g., \"7 gbp\", \"gbp 7\", \"£7??\" → 7).\n- **Never output 0** unless the user explicitly wrote 0; if amount can’t be confidently parsed as >0, set amount_gbp=null and needs_clarification=true.\n\n## Date (STRICT)\n\nOutput only YYYY-MM-DD (no time, no timezone).\n\nIf the user does not explicitly provide a date, set \"date_iso\" to exactly TODAY_UTC.\n\nNever copy dates from examples, memory, or prior turns.\n\nNever output a date before 2024-01-01 unless the user explicitly writes one (e.g., “on 2023-10-05”).\n\nIf a written date can’t be confidently parsed to YYYY-MM-DD, ignore it and use TODAY_UTC.\n\n## Personal/Business default\n- Assume **Business** unless the message clearly indicates a personal meal/coffee/snack → then **Personal**.\n\n## Allowed type values (MUST choose one; do not invent):\n- \"Vehicle > Maintenance\"\n- \"Vehicle > Fuel\"\n- \"Vehicle > Parking\"\n- \"Vehicle > Cleaning\"\n- \"Vehicle > Tolls\"\n- \"Vehicle > Insurance\"\n- \"Utilities > Mobile\"\n- \"Personal > Meals\"\n- \"Other\"\n\n## Non-expense / noise guard\nIf the message looks like chat (“hello”, “testing”, “screenshot”, “correction …”, etc.) or does not mention an expense, **do not** fabricate an amount. Instead:\n- needs_clarification=true\n- amount_gbp=null\n- clarification_question like: \"What’s the amount (GBP) and a short description?\"\n\n## Output (JSON ONLY; no prose, no code fences)\n{\n  \"date_iso\": \"YYYY-MM-DD\",\n  \"personal_or_business\": \"Personal\" | \"Business\",\n  \"description\": \"<short text>\",\n  \"amount_gbp\": <number or null>,\n  \"type\": \"<one of the allowed values above>\",\n  \"needs_clarification\": <true|false>,\n  \"clarification_question\": <string or null>\n}\n\n## Follow-ups\n- If we previously asked for AMOUNT and the user replies with just a number, fill amount_gbp with that number and complete the record.\n- If the user replies \"personal\" or \"business\", update personal_or_business accordingly.\n- Always output a complete JSON object each turn using the remembered context. If still incomplete, keep needs_clarification=true and ask one short question.\n\n## Examples\nUser: \"tyres 80\"\n{\"date_iso\":\"YYYY-MM-DD\",\"personal_or_business\":\"Business\",\"description\":\"Tyres\",\"amount_gbp\":80,\"type\":\"Vehicle > Maintenance\",\"needs_clarification\":false,\"clarification_question\":null}\n\nUser: \"parking\"\n{\"date_iso\":\"YYYY-MM-DD\",\"personal_or_business\":\"Business\",\"description\":\"Parking\",\"amount_gbp\":null,\"type\":\"Vehicle > Parking\",\"needs_clarification\":true,\"clarification_question\":\"What was the amount for Parking (GBP)?\"}\n\nFollow-up: \"7\"\n{\"date_iso\":\"YYYY-MM-DD\",\"personal_or_business\":\"Business\",\"description\":\"Parking\",\"amount_gbp\":7,\"type\":\"Vehicle > Parking\",\"needs_clarification\":false,\"clarification_question\":null}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -416,
+        -64
+      ],
+      "id": "a1bd02ca-58a4-4e40-8f91-d35c7b1bf1e6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -688,
+        112
+      ],
+      "id": "77bc4835-8520-4418-b924-33957bbaad2e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lRm3WwBfG2v5urEu",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$json[\"message\"][\"chat\"][\"id\"]}}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -528,
+        112
+      ],
+      "id": "3fe41164-2706-40a5-b3f3-8ec57cce25a7",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1WpmJT57h4VYUQvtm15XxdoOT59J0G9jy9W1YSY29Q4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -368,
+        112
+      ],
+      "id": "8b54bc09-8b78-4303-af2c-5b1c715853e9",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "CQ4jDg0xtenpYt1d",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Telegram bits ============================================================\nconst tg = $item(0).$node[\"Telegram Trigger\"].json;\nconst chatId =\n  tg?.message?.chat?.id ??\n  tg?.chat?.id ??\n  tg?.message?.from?.id ??\n  null;\n\nconst userText = tg?.message?.text ?? \"\";\n\n// === Parse AI output safely ===================================================\nlet ai = $json;\nlet parsed = {};\ntry {\n  if (typeof ai === \"string\") {\n    parsed = JSON.parse(ai);\n  } else if (ai?.output && typeof ai.output === \"string\") {\n    parsed = JSON.parse(ai.output);\n  } else if (ai?.output && typeof ai.output === \"object\") {\n    parsed = ai.output;\n  } else {\n    parsed = ai;\n  }\n} catch {\n  parsed = ai?.output ?? ai ?? {};\n}\n\n// === Helpers =================================================================\nfunction isoTodayUTC() {\n  return new Date().toISOString().slice(0, 10);\n}\nconst isoRegex = /^\\d{4}-\\d{2}-\\d{2}$/;\n\n// Date guard: only accept YYYY-MM-DD and not before 2024-01-01\nconst parsedDate = (parsed.date_iso ?? \"\").toString().slice(0, 10);\nconst safeDate =\n  isoRegex.test(parsedDate) && parsedDate >= \"2024-01-01\"\n    ? parsedDate\n    : isoTodayUTC();\n\n// Amount: keep null if AI couldn't parse; otherwise round to 2 dp\nlet amount = parsed.amount_gbp;\nif (amount === 0 && !/(^|[^0-9])0([^0-9]|$)/.test(userText)) {\n  // If 0 wasn't explicitly typed, prefer null (forces clarification)\n  amount = null;\n}\nif (typeof amount === \"string\" && amount.trim() === \"\") amount = null;\nif (amount !== null && Number.isFinite(Number(amount))) {\n  amount = Math.round(Number(amount) * 100) / 100;\n} else {\n  amount = null;\n}\n\n// Personal/Business normalization with correct default\nlet pob = parsed.personal_or_business ?? null;\nif (typeof pob === \"string\") {\n  const t = pob.trim().toLowerCase();\n  if (t.startsWith(\"b\")) pob = \"Business\";\n  else if (t.startsWith(\"p\")) pob = \"Personal\";\n  else pob = \"Business\"; // fallback\n} else {\n  pob = \"Business\";\n}\n\n// Type – pass through (AI guarantees allowed set); empty string -> \"Other\"\nconst type = (parsed.type ?? \"\").trim() || \"Other\";\n\n// Needs clarification flag should reflect amount null or AI's own signal\nconst needs =\n  Boolean(parsed.needs_clarification) ||\n  amount === null ||\n  !type ||\n  !pob ||\n  !safeDate;\n\n// Question – prefer AI’s, otherwise a sensible default\nconst question =\n  parsed.clarification_question ??\n  (amount === null ? \"What was the amount (GBP)?\" : null);\n\n// Final object\nreturn [\n  {\n    json: {\n      _chat_id: chatId,\n      intent: parsed.intent ?? \"expense_add\",\n      date_iso: safeDate,\n      personal_or_business: pob,\n      description: (parsed.description ?? userText ?? \"\").trim(),\n      amount_gbp: amount,                 // <-- stays null if unknown\n      currency: \"GBP\",\n      type,\n      needs_clarification: needs,\n      clarification_question: question,\n      raw_ai: parsed,\n      timestamp: new Date().toISOString(),\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -64
+      ],
+      "id": "bbcefad1-de27-4384-aebb-84206d54a839",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4b2802d0-2fcc-4b31-96dc-a34ae2cc851d",
+              "leftValue": "={{$json.needs_clarification}}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "fb5a28c8-1ab3-4158-9a3a-0df8b284aab9",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        -64
+      ],
+      "id": "cfadb4b5-e5c3-4074-976e-91121965021c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json._chat_id}}",
+        "text": "={{$json.clarification_question}}\nI’m not fully sure—here’s what I’ve got:\n• Desc: {{$json.description || '—'}}\n• Amount: £{{$json.amount_gbp || '—'}}\n• Type: {{$json.type || '—'}}\n• Personal/Business: {{$json.personal_or_business || '—'}}\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        496,
+        -256
+      ],
+      "id": "0620f1eb-3818-4360-9970-c7f2a81fbc18",
+      "name": "Send a text message",
+      "webhookId": "25e81681-c6bd-4d11-83e0-2892561a8d89",
+      "credentials": {
+        "telegramApi": {
+          "id": "tMqphwr5OqCNzk0q",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1WpmJT57h4vYUQvtm15XxdOoT59jOG9iy9W1YSY29Q14",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Personal/Business": "={{$item(0).$node[\"Code in JavaScript\"].json.personal_or_business}}",
+            "Description": "={{$item(0).$node[\"Code in JavaScript\"].json.description}}",
+            "Type": "={{$item(0).$node[\"Code in JavaScript\"].json.type}}",
+            "Date ": "={{$item(0).$node[\"Code in JavaScript\"].json.date_iso}}",
+            "Amount ": "={{$item(0).$node[\"Code in JavaScript\"].json.amount_gbp}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date ",
+              "displayName": "Date ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Personal/Business",
+              "displayName": "Personal/Business",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amount ",
+              "displayName": "Amount ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        496,
+        -16
+      ],
+      "id": "cdb59578-a51e-4231-9801-7681afeaf244",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "CQ4jDg0xtenpYt1d",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json._chat_id}}",
+        "text": "=Added to sheet: • {{$json.description}} • £{{$json.amount_gbp}} • Date: {{$json.date_iso}} • Type: {{$json.type}} ({{$json.personal_or_business}})\nIf anything's wrong, just send a correction.\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        32
+      ],
+      "id": "9013b8e0-4d57-4403-9b89-e8ee199278a8",
+      "name": "Send a text message2",
+      "webhookId": "ed68de79-2092-4b31-a3ea-c9aa38c9a784",
+      "credentials": {
+        "telegramApi": {
+          "id": "tMqphwr5OqCNzk0q",
+          "name": "Telegram account 3"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Send a text message2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f707dc84cbd2bf9520c7f0d0aad652875187def992bcf9b3cf3235a889139a0d"
+  }
+}
