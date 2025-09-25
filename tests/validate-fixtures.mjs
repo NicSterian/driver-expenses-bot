@@ -1,7 +1,8 @@
 import fs from "node:fs";
-import Ajv from "ajv";
+import Ajv2020 from "ajv/dist/2020.js"; // <-- Use Ajv2020 to support draft 2020-12
 
-const ajv = new Ajv({ allErrors: true, strict: false });
+const ajv = new Ajv2020({ allErrors: true, strict: false });
+
 const schema = JSON.parse(fs.readFileSync("prompts/expense.schema.json", "utf8"));
 const validate = ajv.compile(schema);
 
@@ -21,4 +22,6 @@ for (const [file, name] of cases) {
     console.log(`✅ ${name} matches schema`);
   }
 }
+
 process.exit(failures ? 1 : 0);
+
