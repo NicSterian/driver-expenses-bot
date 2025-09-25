@@ -1,0 +1,26 @@
+@startuml sequence_happy_path
+
+title Sequence (Happy Path: "tyres 80")
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+skinparam ArrowColor #333
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 12
+skinparam DefaultFontSize 14
+
+participant User as U
+participant Telegram as TG
+participant n8n as N
+participant "OpenAI (AI Agent)" as AI
+participant "Google Sheets" as GS
+
+U -> TG : "tyres 80"
+TG -> N : webhook update
+N -> AI : system prompt + message
+AI --> N : JSON {date_iso, description, amount_gbp, ...}
+N -> N : Code node (normalize, guards)
+N -> N : IF (needs_clarification? == false)
+N -> GS : Append Row
+GS --> N : OK
+N --> TG : "Logged tyres £80 (Maintenance)"
+@enduml

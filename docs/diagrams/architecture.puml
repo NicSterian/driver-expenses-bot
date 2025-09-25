@@ -1,0 +1,28 @@
+@startuml architecture
+
+title Driver Expenses Bot - Data Flow (High Level)
+skinparam componentStyle rectangle
+skinparam ArrowColor #333
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 12
+skinparam DefaultFontSize 14
+
+actor "Telegram User" as TG
+node "n8n" as N {
+  component "Telegram Trigger" as TGT
+  component "AI Agent\n(OpenAI)" as AIA
+  component "Code Node\n(validate/normalize)" as CODE
+  component "IF: needs_clarification?" as IFN
+  component "Telegram Send Message\n(ask/confirm)" as TSM
+  component "Google Sheets: Append Row" as GSA
+}
+
+TG --> TGT : message
+TGT --> AIA
+AIA --> CODE
+CODE --> IFN
+IFN --> TSM : yes (clarify)
+TSM --> TGT : user reply
+IFN --> GSA : no (append)
+GSA --> TSM : confirmation
+@enduml

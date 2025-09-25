@@ -1,0 +1,26 @@
+@startuml context_map
+
+title Context Map (Repo → Runtime)
+skinparam componentStyle rectangle
+skinparam ArrowColor #333
+skinparam DefaultFontSize 14
+
+package "Repo" {
+  component "prompts/ai-agent-system.md" as PROMPT
+  component "prompts/expense.schema.json" as SCHEMA
+  component "docs/code-node-snippet.js" as CODENODE
+  component "docs/sample-sheet.csv" as SHEET
+  component "workflow/driver-expenses-bot.json" as WFJSON
+  component "tests/fixtures/*" as FIX
+}
+
+node "n8n" as N8N
+database "Google Sheets" as GSH
+
+PROMPT --> N8N : AI Agent uses
+SCHEMA --> N8N : (dev/tests)
+FIX --> N8N : (dev/tests)
+CODENODE --> N8N : Code Node paste
+WFJSON --> N8N : Import/export
+SHEET --> GSH : template headers
+@enduml
