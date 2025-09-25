@@ -1,0 +1,11 @@
+{
+  "name": "driver-expenses-bot",
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "test:fixtures": "node tests/validate-fixtures.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}
