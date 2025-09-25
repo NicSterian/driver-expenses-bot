@@ -187,21 +187,6 @@ You should see output like:
 
 If any test fails, it will show detailed validation errors.
 
----
-## 🌐 n8n Workflow
-
-You can find the exported n8n workflow in:
-
-📂 [workflow/driver-expenses-bot.json](workflow/driver-expenses-bot.json)
-
-To use it:
-
-1. Open your **n8n editor UI**
-2. Click the **hamburger menu (☰)** → **Import Workflow**
-3. Upload this JSON file
-4. Paste the JS from `docs/code-node-snippet.js` into the relevant **Code** node
-
-✅ Make sure you’ve configured your **Telegram**, **OpenAI**, and **Google Sheets** credentials inside n8n before running the workflow.
 
 ---
 
