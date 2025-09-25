@@ -15,3 +15,16 @@ env/.env
 
 # n8n exports can be big; keep only the final JSON
 workflow/*.backup.json
+
+# env
+.env
+env/.env
+env/*.local
+
+# n8n exports
+*.n8n.json
+*.workflow.json
+
+# OS noise
+.DS_Store
+Thumbs.db

@@ -1,0 +1,9 @@
+{
+  "date_iso": "YYYY-MM-DD",
+  "personal_or_business": "Business",
+  "description": "Tyres",
+  "amount_gbp": 80,
+  "type": "Vehicle > Maintenance",
+  "needs_clarification": false,
+  "clarification_question": null
+}

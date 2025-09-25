@@ -1,0 +1,9 @@
+{
+  "date_iso": "YYYY-MM-DD",
+  "personal_or_business": "Business",
+  "description": "Parking",
+  "amount_gbp": null,
+  "type": "Vehicle > Parking",
+  "needs_clarification": true,
+  "clarification_question": "What was the amount (GBP)?"
+}
