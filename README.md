@@ -137,10 +137,15 @@ When the user replies (e.g., `50`), the system completes the previous entry.
 
 ## 📸 Screenshots
 
-- `docs/screenshots/ai_agent_output.jpg`
-- `docs/screenshots/telegram_clarification.jpg`
-- `docs/screenshots/json_output_clarification.jpg`
-- `docs/screenshots/Google_Sheets_data.PNG`
+Click to view key parts of the automation:
+
+- ![AI Output](docs/screenshots/ai_agent_output.jpg)
+- ![Prompt](docs/screenshots/ai_agent_prompt.jpg)
+- ![JSON Clarification](docs/screenshots/json_output_clarification.jpg)
+- ![Google Sheets](docs/screenshots/google_sheets_data.png)
+- ![Telegram Interaction](docs/screenshots/telegram_interaction.png)
+- ![n8n Workflow](docs/screenshots/n8n_workflow.jpg)
+- ![Clarification](docs/screenshots/telegram_clarification.jpg)
 
 ---
 
