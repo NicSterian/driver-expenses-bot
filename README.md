@@ -76,7 +76,7 @@ driver-expenses-bot/
 ├── tools/
 │   └── plantuml.jar                   # optional, for UML rendering
 
-
+```
 ---
 
 ## ⚙️ Prerequisites
