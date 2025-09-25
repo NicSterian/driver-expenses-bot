@@ -1,6 +1,6 @@
 # Driver Expenses Bot
 
-A lightweight chat-to-spreadsheet assistant for self-employed drivers (e.g., Uber, Bolt, etc.).
+A lightweight **chat-to-spreadsheet assistant** for self-employed drivers (e.g., Uber, Bolt, etc.).
 
 💬 Send a Telegram message like `tyres 80`, and the bot:
 
@@ -15,9 +15,10 @@ A lightweight chat-to-spreadsheet assistant for self-employed drivers (e.g., Ube
 
 **Flow Overview**:
 
-Telegram → n8n (Trigger) → AI Agent (OpenAI) → Code (validate/normalize)
-→ IF (needs_clarification?) ├─ yes → Telegram (ask)
-└─ no → Google Sheets (append) → Telegram (confirm)
+**Telegram** → `n8n Trigger` → **AI Agent** (OpenAI) → `Code Node` (validate/normalize)  
+→ IF `needs_clarification?`  
+├─ Yes → Telegram (ask)  
+└─ No → Google Sheets (append) → Telegram (confirm)
 
 
 👉 See [`docs/architecture.md`](docs/architecture.md) for full **PlantUML diagrams** and **data model**.
@@ -37,40 +38,41 @@ Telegram → n8n (Trigger) → AI Agent (OpenAI) → Code (validate/normalize)
 
 ## 📁 What’s in this repo
 
+```text
 driver-expenses-bot/
 ├── README.md
 ├── package.json
 ├── .gitignore
 ├── env/
-│ └── .env.example
+│   └── .env.example
 ├── prompts/
-│ ├── ai-agent-system.md # system prompt
-│ └── expense.schema.json # expected JSON structure
+│   ├── ai-agent-system.md              # system prompt for OpenAI
+│   └── expense.schema.json             # expected output format
 ├── workflow/
-│ └── driver-expenses-bot.json # n8n export
+│   └── driver-expenses-bot.json        # exported n8n workflow
 ├── tests/
-│ ├── validate-fixtures.mjs
-│ └── fixtures/
-│ ├── tyres_80.in.txt
-│ ├── tyres_80.out.json
-│ ├── parking_missing_amount.in.txt
-│ └── parking_missing_amount.out.json
+│   ├── validate-fixtures.mjs           # AJV validator
+│   └── fixtures/
+│       ├── tyres_80.in.txt
+│       ├── tyres_80.out.json
+│       ├── parking_missing_amount.in.txt
+│       └── parking_missing_amount.out.json
 ├── docs/
-│ ├── architecture.md # system description + diagrams
-│ ├── code-node-snippet.js # validation JS for n8n Code node
-│ ├── sample-sheet.csv # template for Google Sheet
-│ ├── diagrams/ # PlantUML files
-│ │ ├── architecture.puml
-│ │ ├── sequence_happy_path.puml
-│ │ └── context_map.puml
-│ └── screenshots/
-│ ├── ai_agent_output.jpg
-│ ├── ai_agent_prompt.jpg
-│ ├── json_output_clarification.jpg
-│ ├── Google_Sheets_data.PNG
-│ └── telegram_clarification.jpg
+│   ├── architecture.md                 # full architecture description
+│   ├── code-node-snippet.js           # custom JS code for n8n Code node
+│   ├── sample-sheet.csv               # structure of the Google Sheet
+│   ├── diagrams/                      # PlantUML sources
+│   │   ├── architecture.puml
+│   │   ├── context_map.puml
+│   │   └── sequence_happy_path.puml
+│   └── screenshots/                   # PNG/JPG screenshots of the flow
+│       ├── ai_agent_output.jpg
+│       ├── ai_agent_prompt.jpg
+│       ├── json_output_clarification.jpg
+│       ├── Google_Sheets_data.PNG
+│       └── telegram_clarification.jpg
 ├── tools/
-│ └── plantuml.jar # optional CLI rendering
+│   └── plantuml.jar                   # optional, for UML rendering
 
 
 ---
