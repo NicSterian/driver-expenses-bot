@@ -160,7 +160,7 @@ MIT License
 This project was developed as part of the **Professional Development module** at **Elizabeth School of London**, in partnership with **Newcastle College Group** (NCG).
 
 - [🔗 GitHub Repo](https://github.com/NicSterian/driver-expenses-bot)
-- [🔗 LinkedIn Profile](https://www.linkedin.com/in/your-link-here)
+- [🔗 LinkedIn Profile](https://www.linkedin.com/in/nicolae-sterian)
 - 📎 CV available on LinkedIn or on request
 
 ---
