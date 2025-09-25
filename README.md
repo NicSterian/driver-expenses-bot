@@ -17,7 +17,7 @@ Telegram → n8n (Trigger)
 → IF (needs_clarification?)
 ├─ yes → Telegram (ask) ⟂
 └─ no → Google Sheets (append) → Telegram (confirm)
-
+> See **[docs/architecture.md](docs/architecture.md)** for flow and sequence diagrams.
 
 **Stack**
 
