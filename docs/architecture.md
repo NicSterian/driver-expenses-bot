@@ -12,4 +12,4 @@ flowchart LR
   ASK -. waits for reply .- TGT
   IF -- no --> SHEETS[Google Sheets: Append Row]
   SHEETS --> CONF[Telegram Send Message (confirmation)]
- 
+ ```
