@@ -100,6 +100,15 @@ driver-expenses-bot/
 
 ---
 
+# 📂 Supporting Docs
+
+For easier setup, check these additional files in the repo:
+
+* [`prompts/ai-agent-system.md`](../prompts/ai-agent-system.md) → Defines the strict schema + parsing rules for the AI Agent.
+* [`docs/code-node-snippet.js`](../docs/code-node-snippet.js) → Custom JavaScript for n8n’s **Code** node to validate and normalize AI outputs.
+
+---
+
 ## 🚀 Quick Setup
 
 1. Copy `.env.example` to `.env` and fill in your credentials.
