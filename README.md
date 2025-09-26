@@ -170,27 +170,28 @@ These test cases check that the AI output (`JSON`) matches the expected schema.
 #### 1. Clone the repo
 ```bash
 git clone https://github.com/NicSterian/driver-expenses-bot.git
-cd driver-expenses-bot
+cd driver-expenses-bot ```
 
 #### 2. Install dependencies
 ```bash
-npm install
+npm install ```
 
 ###$ 3. Run tests
 ```bash
-npm test
-
+npm test ```
+ 
 
 ✅ Alternatively, run manually:
 ```bash
 `node tests/validate-fixtures.mjs`
+```
 
 
 You should see output like:
 ```bash   
 ✅ tyres 80 matches schema
 ✅ parking (missing amount) matches schema
-
+```
 
 If any test fails, it will show detailed validation errors.
 
@@ -298,11 +299,11 @@ If you want to test locally (without full deployment):
 
 1. Run `n8n` using Docker:
    ```bash
-   docker run -it --rm -p 5678:5678 n8nio/n8n
+   docker run -it --rm -p 5678:5678 n8nio/n8n```
 
 2. Use **ngrok** to expose your port to Telegram:
    ```bash
-   ngrok http 5678
+   ngrok http 5678```
 
 3. Update the **Webhook URL** in Telegram to use the `ngrok` HTTPS address
 
