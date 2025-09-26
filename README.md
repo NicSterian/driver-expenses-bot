@@ -99,6 +99,16 @@ driver-expenses-bot/
 - Google Sheets API + service account with Editor access
 
 ---
+## 💡 Deployment Alternatives
+
+| Option        | Description                                                                     |
+| ------------- | ------------------------------------------------------------------------------- |
+| **Localhost** | Run with Docker Compose on your own machine. Access via `http://localhost:5678` |
+| **Other VPS** | Works with providers like DigitalOcean, Hetzner, or any Docker-compatible host  |
+| **n8n.cloud** | Use the official hosted version of n8n — no Docker or server needed             |
+
+
+---
 
 ## 🚀 Quick Setup
 
@@ -125,15 +135,6 @@ If the user message is incomplete (e.g., missing amount), the bot asks one follo
 > “What was the amount (GBP)?”
 
 When the user replies (e.g., `50`), the system completes the previous entry.
-
----
-## 💡 Deployment Alternatives
-
-| Option        | Description                                                                     |
-| ------------- | ------------------------------------------------------------------------------- |
-| **Localhost** | Run with Docker Compose on your own machine. Access via `http://localhost:5678` |
-| **Other VPS** | Works with providers like DigitalOcean, Hetzner, or any Docker-compatible host  |
-| **n8n.cloud** | Use the official hosted version of n8n — no Docker or server needed             |
 
 
 ---
