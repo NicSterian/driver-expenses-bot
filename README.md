@@ -249,48 +249,57 @@ The expenses are logged to a Google Sheet.
 
    ```text
    Date (ISO) | Personal/Business | Description | Amount (GBP) | Type
-Go to Google Cloud Console
 
-Create a Service Account with Editor access to Google Sheets
+2. Go to [Google Cloud Console](https://console.cloud.google.com/)
 
-Share the spreadsheet with the service account’s email
+3. Create a **Service Account** with **Editor** access to Google Sheets
 
-Upload your service account JSON key to n8n and create new Google Sheets credentials
+4. Share the spreadsheet with the service account’s email
 
-✅ Or import docs/sample-sheet.csv as a template.
+5. Upload your **service account JSON key** to n8n and create new **Google Sheets credentials**
+
+✅ Or import [`docs/sample-sheet.csv`](docs/sample-sheet.csv) as a template.
 
 ---
 
-🖥️ 5. Deployment (Docker + Caddy + VPS)
+### 🖥️ 5. Deployment (Docker + Caddy + VPS)
 
-This project was deployed on a Google Cloud VM (Ubuntu) using:
+This project was deployed on a **Google Cloud VM (Ubuntu)** using:
 
-Docker Compose – to run n8n
+**Docker Compose** – to run n8n
 
-Caddy – as a reverse proxy with auto HTTPS
+**Caddy** – as a reverse proxy with auto HTTPS
 
-sslip.io – to create a hostname based on the IP
+[sslip.io](https://sslip.io/) – to create a hostname based on the IP
 
 🔗 Example URL:
-https://35-214-93-205.sslip.io/workflow/zptVWHkZ1Orx69w2
+[https://35-214-93-205.sslip.io/workflow/zptVWHkZ1Orx69w2](https://35-214-93-205.sslip.io/workflow/zptVWHkZ1Orx69w2)
 
-💡 Deployment Alternatives
-Option	Description
-Localhost	Use Docker Compose on your own machine. Access n8n via http://localhost:5678
-Other VPS	Works with DigitalOcean, Hetzner, or any Docker-compatible host
-n8n.cloud	Use the official hosted version of n8n (no need for Docker or servers)
+💡 **Deployment Alternatives**
 
-🧪 Local Testing
+| Option      | Description                                                                 |
+|-------------|-----------------------------------------------------------------------------|
+| **Localhost** | Run with Docker Compose on your own machine. Access via `http://localhost:5678` |
+| **Other VPS** | Works with providers like DigitalOcean, Hetzner, or any Docker-compatible host |
+| **n8n.cloud** | Use the official hosted version of n8n — no Docker or server needed         |
+
+---
+
+🧪 **Local Testing**
+
 If you want to test locally (without full deployment):
 
-Run n8n using Docker:
+1. Run `n8n` using Docker:
+   ```bash
+   docker run -it --rm -p 5678:5678 n8nio/n8n
 
-docker run -it --rm -p 5678:5678 n8nio/n8n
-Use ngrok to expose your port to Telegram:
+2. Use **ngrok** to expose your port to Telegram:
+   ```bash
+   ngrok http 5678
 
-ngrok http 5678
-Update the Webhook URL in Telegram to use the ngrok HTTPS address
-
+3. Update the **Webhook URL** in Telegram to use the `ngrok` HTTPS address
+⚠️ **Note**: Free `ngrok` sessions reset every time you restart it, which means your Telegram Webhook URL will change.
+If you want a **persistent URL**, you’ll need a paid `ngrok` plan or an alternative tunneling tool.
 
 ---
 
