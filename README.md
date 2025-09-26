@@ -109,7 +109,7 @@ driver-expenses-bot/
    - Paste JS from `docs/code-node-snippet.js` into the Code node.
 3. Set up your Google Sheet with the following headers (row 1):
 
-Date (ISO) | Personal/Business | Description | Amount (GBP) | Type
+Date | Personal/Business | Description | Amount | Type
 
 
 ✅ Or import `docs/sample-sheet.csv` as a template.
@@ -125,6 +125,16 @@ If the user message is incomplete (e.g., missing amount), the bot asks one follo
 > “What was the amount (GBP)?”
 
 When the user replies (e.g., `50`), the system completes the previous entry.
+
+---
+## 💡 Deployment Alternatives
+
+| Option        | Description                                                                     |
+| ------------- | ------------------------------------------------------------------------------- |
+| **Localhost** | Run with Docker Compose on your own machine. Access via `http://localhost:5678` |
+| **Other VPS** | Works with providers like DigitalOcean, Hetzner, or any Docker-compatible host  |
+| **n8n.cloud** | Use the official hosted version of n8n — no Docker or server needed             |
+
 
 ---
 
@@ -197,7 +207,7 @@ npm test
  
 
 ✅ Alternatively, run manually:
-```bash
+```markdown
 `node tests/validate-fixtures.mjs`
 ```
 
@@ -315,7 +325,7 @@ This project was deployed on a **Google Cloud VM (Ubuntu)** using:
 For validation and end-to-end testing instructions, see the dedicated guide:
 
 
-📄 [Testing Guide](testing.md)
+📄 [Testing Guide](TESTING.md)
 
 
 ---
