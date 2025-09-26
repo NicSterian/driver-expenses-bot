@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "scripts": {
+    "test": "npm run test:fixtures",
     "test:fixtures": "node tests/validate-fixtures.mjs",
     "render:uml": "java -jar tools/plantuml.jar -tpng docs/diagrams/*.puml"
   },
