@@ -170,14 +170,15 @@ These test cases check that the AI output (`JSON`) matches the expected schema.
 #### 1. Clone the repo
 ```bash
 git clone https://github.com/NicSterian/driver-expenses-bot.git
-cd driver-expenses-bot ```
+cd driver-expenses-bot 
+```
 
 #### 2. Install dependencies
 ```bash
 npm install 
 ```
 
-###$ 3. Run tests
+#### 3. Run tests
 ```bash
 npm test 
 ```
