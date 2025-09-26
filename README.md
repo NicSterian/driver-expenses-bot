@@ -259,7 +259,10 @@ Upload your service account JSON key to n8n and create new Google Sheets credent
 
 ✅ Or import docs/sample-sheet.csv as a template.
 
+---
+
 🖥️ 5. Deployment (Docker + Caddy + VPS)
+
 This project was deployed on a Google Cloud VM (Ubuntu) using:
 
 Docker Compose – to run n8n
