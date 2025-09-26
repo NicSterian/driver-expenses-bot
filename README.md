@@ -40,42 +40,50 @@ A lightweight **chat-to-spreadsheet assistant** for self-employed drivers (e.g.,
 
 ```text
 driver-expenses-bot/
-├── [README.md](README.md)                  # main documentation
-├── [TESTING.md](TESTING.md)                # detailed testing guide
-├── [package.json](package.json)            # dependencies & scripts
-├── [.gitignore](.gitignore)                # ignored files
-├── [env/](env)                             # environment configs
-│   └── [.env.example](env/.env.example)    # sample env vars
-├── [prompts/](prompts)                     # AI agent prompts & schema
-│   ├── [ai-agent-system.md](prompts/ai-agent-system.md)
-│   └── [expense.schema.json](prompts/expense.schema.json)
-├── [workflow/](workflow)                   # exported n8n workflow
-│   └── [driver-expenses-bot.json](workflow/driver-expenses-bot.json)
-├── [tests/](tests)                         # schema validator + fixtures
-│   ├── [validate-fixtures.mjs](tests/validate-fixtures.mjs)
+├── README.md                          # main documentation
+├── TESTING.md                         # detailed testing guide
+├── CHANGELOG.md                       # version history
+├── CONTRIBUTING.md                    # guidelines for contributors
+├── SECURITY.md                        # security policy
+├── LICENSE                            # MIT license
+├── package.json                       # dependencies & scripts
+├── package-lock.json                  # locked dependency versions
+├── .gitignore                         # ignored files
+├── .github/                           # GitHub Actions workflows
+│   └── workflows/
+│       └── ci.yml
+├── env/
+│   └── .env.example                   # environment variable template
+├── prompts/
+│   ├── ai-agent-system.md             # system prompt for OpenAI
+│   └── expense.schema.json            # expected output format
+├── workflow/
+│   └── driver-expenses-bot.json       # exported n8n workflow
+├── tests/
+│   ├── validate-fixtures.mjs          # AJV validator
 │   └── fixtures/
-│       ├── [tyres_80.in.txt](tests/fixtures/tyres_80.in.txt)
-│       ├── [tyres_80.out.json](tests/fixtures/tyres_80.out.json)
-│       ├── [parking_missing_amount.in.txt](tests/fixtures/parking_missing_amount.in.txt)
-│       └── [parking_missing_amount.out.json](tests/fixtures/parking_missing_amount.out.json)
-├── [docs/](docs)                           # documentation & assets
-│   ├── [architecture.md](docs/architecture.md)
-│   ├── [code-node-snippet.js](docs/code-node-snippet.js)
-│   ├── [sample-sheet.csv](docs/sample-sheet.csv)
-│   ├── diagrams/                           # PlantUML sources
-│   │   ├── [architecture.puml](docs/diagrams/architecture.puml)
-│   │   ├── [context_map.puml](docs/diagrams/context_map.puml)
-│   │   └── [sequence_happy_path.puml](docs/diagrams/sequence_happy_path.puml)
-│   └── screenshots/                        # flow screenshots
-│       ├── [ai_agent_output.jpg](docs/screenshots/ai_agent_output.jpg)
-│       ├── [ai_agent_prompt.jpg](docs/screenshots/ai_agent_prompt.jpg)
-│       ├── [json_output_clarification.jpg](docs/screenshots/json_output_clarification.jpg)
-│       ├── [google_sheets_data.png](docs/screenshots/google_sheets_data.png)
-│       ├── [telegram_interaction.png](docs/screenshots/telegram_interaction.png)
-│       ├── [n8n_workflow.jpg](docs/screenshots/n8n_workflow.jpg)
-│       └── [telegram_clarification.jpg](docs/screenshots/telegram_clarification.jpg)
-├── [tools/](tools)
-│   └── [plantuml.jar](tools/plantuml.jar)  # optional, for UML rendering
+│       ├── tyres_80.in.txt
+│       ├── tyres_80.out.json
+│       ├── parking_missing_amount.in.txt
+│       └── parking_missing_amount.out.json
+├── docs/
+│   ├── architecture.md                # full architecture description
+│   ├── code-node-snippet.js           # custom JS code for n8n Code node
+│   ├── sample-sheet.csv               # structure of the Google Sheet
+│   ├── diagrams/                      # PlantUML sources
+│   │   ├── architecture.puml
+│   │   ├── context_map.puml
+│   │   └── sequence_happy_path.puml
+│   └── screenshots/                   # PNG/JPG screenshots of the flow
+│       ├── ai_agent_output.jpg
+│       ├── ai_agent_prompt.jpg
+│       ├── json_output_clarification.jpg
+│       ├── google_sheets_data.png
+│       ├── telegram_interaction.png
+│       ├── n8n_workflow.jpg
+│       └── telegram_clarification.jpg
+├── tools/
+│   └── plantuml.jar                   # optional, for UML rendering
 
 ```
 
