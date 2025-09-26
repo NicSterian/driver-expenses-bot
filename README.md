@@ -149,15 +149,15 @@ Click to view key parts of the automation:
 
 ---
 
-##📦 Local Testing Instructions
+## 📦 Local Testing Instructions
 
 Want to verify the schema output yourself?
 
-🛠️ *Prerequisites*:
+## 🛠️ Prerequisites:
 
-Node.js v20+
+- Node.js v20+
 
-Git
+- Git
 
 ##🧪 Run the test fixtures
 
@@ -178,12 +178,12 @@ These test cases check that the AI output (JSON) matches the expected schema:
 
 
 ✅ Alternatively, run manually:
-    ```bash
-    node tests/validate-fixtures.mjs
+    
+    `node tests/validate-fixtures.mjs`
 
 
 You should see output like:
-    ```graphql
+   
 ✅ tyres 80 matches schema
 ✅ parking (missing amount) matches schema
 
