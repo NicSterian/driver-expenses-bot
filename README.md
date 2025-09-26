@@ -1,29 +1,38 @@
-# 🚖 Driver Expenses Bot
+# Driver Expenses Bot
 
-A lightweight **chat-to-spreadsheet assistant** for self-employed drivers (Uber, Bolt, etc.).
+A lightweight **chat-to-spreadsheet assistant** for self-employed drivers (e.g., Uber, Bolt, etc.).
 
-💬 Example: Send `tyres 80` to Telegram → AI parses it → Bot asks clarifications (if needed) → Appends to Google Sheets → Confirms back in chat.
+💬 Send a Telegram message like `tyres 80`, and the bot:
+
+1. Parses the message with an AI Agent (OpenAI)
+2. Asks a clarifying question if needed
+3. Appends the data to Google Sheets
+4. Sends you a confirmation
 
 ---
 
 ## 🧠 Architecture
 
-**Telegram** → `n8n Trigger` → **AI Agent** (OpenAI) → `Code Node` (validate/normalize)
-→ IF `needs_clarification?`
-├─ Yes → Telegram (ask)
+**Flow Overview**:
+
+**Telegram** → `n8n Trigger` → **AI Agent** (OpenAI) → `Code Node` (validate/normalize)  
+→ IF `needs_clarification?`  
+├─ Yes → Telegram (ask)  
 └─ No → Google Sheets (append) → Telegram (confirm)
 
-👉 See [`docs/architecture.md`](docs/architecture.md) for PlantUML diagrams and data model.
+
+👉 See [`docs/architecture.md`](docs/architecture.md) for full **PlantUML diagrams** and **data model**.
 
 ---
 
 ## 🧰 Stack
 
-* **n8n** – workflow automation
-* **Telegram Bot API** – chat interface
-* **OpenAI API** – natural language parsing
-* **Google Sheets API** – storage
-* **PlantUML** – diagrams
+- **n8n** (self-hosted) – workflow automation (Telegram → AI → Sheets)
+- **Telegram Bot API** – user interface
+- **OpenAI API** – natural language parsing
+- **Google Sheets API** – data storage
+- **Google Cloud VM / VPS** – hosting environment
+- **PlantUML** – system architecture diagrams
 
 ---
 
@@ -31,71 +40,294 @@ A lightweight **chat-to-spreadsheet assistant** for self-employed drivers (Uber,
 
 ```text
 driver-expenses-bot/
-├── [README.md](README.md)                # main docs
-├── [TESTING.md](TESTING.md)              # detailed testing instructions
-├── [package.json](package.json)          # Node project metadata
-├── [env/.env.example](env/.env.example)  # example environment vars
-├── [prompts/ai-agent-system.md](prompts/ai-agent-system.md)
-├── [prompts/expense.schema.json](prompts/expense.schema.json)
-├── [workflow/driver-expenses-bot.json](workflow/driver-expenses-bot.json)
-├── [tests/validate-fixtures.mjs](tests/validate-fixtures.mjs)
-├── [tests/fixtures/](tests/fixtures/)    # input/output examples
-├── [docs/architecture.md](docs/architecture.md)
-├── [docs/code-node-snippet.js](docs/code-node-snippet.js)
-├── [docs/sample-sheet.csv](docs/sample-sheet.csv)
-├── [docs/diagrams/](docs/diagrams/)      # UML sources
-├── [docs/screenshots/](docs/screenshots/) # demo screenshots
-└── [tools/plantuml.jar](tools/plantuml.jar)
+├── [README.md](README.md)                  # main documentation
+├── [TESTING.md](TESTING.md)                # detailed testing guide
+├── [package.json](package.json)            # dependencies & scripts
+├── [.gitignore](.gitignore)                # ignored files
+├── [env/](env)                             # environment configs
+│   └── [.env.example](env/.env.example)    # sample env vars
+├── [prompts/](prompts)                     # AI agent prompts & schema
+│   ├── [ai-agent-system.md](prompts/ai-agent-system.md)
+│   └── [expense.schema.json](prompts/expense.schema.json)
+├── [workflow/](workflow)                   # exported n8n workflow
+│   └── [driver-expenses-bot.json](workflow/driver-expenses-bot.json)
+├── [tests/](tests)                         # schema validator + fixtures
+│   ├── [validate-fixtures.mjs](tests/validate-fixtures.mjs)
+│   └── fixtures/
+│       ├── [tyres_80.in.txt](tests/fixtures/tyres_80.in.txt)
+│       ├── [tyres_80.out.json](tests/fixtures/tyres_80.out.json)
+│       ├── [parking_missing_amount.in.txt](tests/fixtures/parking_missing_amount.in.txt)
+│       └── [parking_missing_amount.out.json](tests/fixtures/parking_missing_amount.out.json)
+├── [docs/](docs)                           # documentation & assets
+│   ├── [architecture.md](docs/architecture.md)
+│   ├── [code-node-snippet.js](docs/code-node-snippet.js)
+│   ├── [sample-sheet.csv](docs/sample-sheet.csv)
+│   ├── diagrams/                           # PlantUML sources
+│   │   ├── [architecture.puml](docs/diagrams/architecture.puml)
+│   │   ├── [context_map.puml](docs/diagrams/context_map.puml)
+│   │   └── [sequence_happy_path.puml](docs/diagrams/sequence_happy_path.puml)
+│   └── screenshots/                        # flow screenshots
+│       ├── [ai_agent_output.jpg](docs/screenshots/ai_agent_output.jpg)
+│       ├── [ai_agent_prompt.jpg](docs/screenshots/ai_agent_prompt.jpg)
+│       ├── [json_output_clarification.jpg](docs/screenshots/json_output_clarification.jpg)
+│       ├── [google_sheets_data.png](docs/screenshots/google_sheets_data.png)
+│       ├── [telegram_interaction.png](docs/screenshots/telegram_interaction.png)
+│       ├── [n8n_workflow.jpg](docs/screenshots/n8n_workflow.jpg)
+│       └── [telegram_clarification.jpg](docs/screenshots/telegram_clarification.jpg)
+├── [tools/](tools)
+│   └── [plantuml.jar](tools/plantuml.jar)  # optional, for UML rendering
+
 ```
+
+📌 **Note**: Dependencies (`node_modules/`) are installed locally with `npm install` and excluded from the repo by `.gitignore.`
 
 ---
 
 ## ⚙️ Prerequisites
 
-* Git
-* Docker (or VPS / n8n.cloud)
-* Telegram Bot token ([@BotFather](https://t.me/BotFather))
-* OpenAI API key
-* Google Sheets API credentials
-* Node.js **20+** (recommend: `nvm use`)
+- Git, Docker (or VPS with n8n)
+- Telegram Bot token (via [@BotFather](https://t.me/BotFather))
+- OpenAI API key
+- Google Sheets API + service account with Editor access
 
 ---
 
 ## 🚀 Quick Setup
 
-1. Copy `.env.example` → `.env` and fill in credentials.
-2. In n8n: import `workflow/driver-expenses-bot.json`.
-3. Paste JS from [`docs/code-node-snippet.js`](docs/code-node-snippet.js) into Code node.
-4. Set up Google Sheet (or import [`docs/sample-sheet.csv`](docs/sample-sheet.csv)).
-5. Start workflow and test via Telegram.
+1. Copy `.env.example` to `.env` and fill in your credentials.
+2. In **n8n**:
+   - Add credentials for Telegram, OpenAI, and Google Sheets.
+   - Import `workflow/driver-expenses-bot.json`.
+   - Paste JS from `docs/code-node-snippet.js` into the Code node.
+3. Set up your Google Sheet with the following headers (row 1):
+
+Date (ISO) | Personal/Business | Description | Amount (GBP) | Type
+
+
+✅ Or import `docs/sample-sheet.csv` as a template.
+
+4. Start the workflow and test via Telegram.
 
 ---
 
-## 🧪 Testing
+## ❓ Clarifying Questions
 
-For detailed testing steps (schema validation + end-to-end n8n run), see:
-👉 [TESTING.md](TESTING.md)
+If the user message is incomplete (e.g., missing amount), the bot asks one follow-up question like:
 
----
+> “What was the amount (GBP)?”
 
-## 📸 Screenshots
-
-* ![AI Output](docs/screenshots/ai_agent_output.jpg)
-* ![Prompt](docs/screenshots/ai_agent_prompt.jpg)
-* ![JSON Clarification](docs/screenshots/json_output_clarification.jpg)
-* ![Google Sheets](docs/screenshots/google_sheets_data.png)
-* ![Telegram Interaction](docs/screenshots/telegram_interaction.png)
-* ![n8n Workflow](docs/screenshots/n8n_workflow.jpg)
-* ![Clarification](docs/screenshots/telegram_clarification.jpg)
+When the user replies (e.g., `50`), the system completes the previous entry.
 
 ---
 
 ## 🔐 Ethics & Security
 
-* ✅ No secrets in repo (`.env` or n8n credentials only)
-* ✅ Minimum Google permissions
-* ⚠️ Remind users data is stored in Sheets
-* 🛑 For **personal academic use only** (not production)
+- ✅ No secrets in repo – all sensitive data via `.env` or n8n credentials
+- ✅ Minimum permissions for Google service accounts
+- ⚠️ Remind users that their data is being stored (ethical design)
+- 🛑 Currently designed for **personal** use only – not multi-user
+
+---
+
+## 🧪 Troubleshooting
+
+| Error | Fix |
+|------|-----|
+| `No columns found` | Ensure Sheet has header row + service account has Editor access |
+| `IF node type mismatch` | Enable “Convert types where required” |
+| Chat ID missing | Use `{{$json._chat_id}}` or `{{$node["Telegram Trigger"].json.message.chat.id}}` |
+
+---
+
+## 📸 Screenshots
+
+Click to view key parts of the automation:
+
+- ![AI Output](docs/screenshots/ai_agent_output.jpg)
+- ![Prompt](docs/screenshots/ai_agent_prompt.jpg)
+- ![JSON Clarification](docs/screenshots/json_output_clarification.jpg)
+- ![Google Sheets](docs/screenshots/google_sheets_data.png)
+- ![Telegram Interaction](docs/screenshots/telegram_interaction.png)
+- ![n8n Workflow](docs/screenshots/n8n_workflow.jpg)
+- ![Clarification](docs/screenshots/telegram_clarification.jpg)
+
+---
+
+## 📦 Local Testing Instructions
+
+Want to verify the schema output yourself?
+
+---
+
+### 🛠️ Prerequisites:
+
+- **Node.js** v20+ (nvm recommended: nvm use)
+
+- **Git**
+
+---
+
+### 🧪 Run the test fixtures
+
+These test cases check that the AI output (`JSON`) matches the expected schema.
+
+#### 1. Clone the repo
+```bash
+git clone https://github.com/NicSterian/driver-expenses-bot.git
+cd driver-expenses-bot 
+```
+
+#### 2. Install dependencies
+```bash
+npm install 
+```
+
+#### 3. Run tests
+```bash
+npm test 
+```
+ 
+
+✅ Alternatively, run manually:
+```bash
+`node tests/validate-fixtures.mjs`
+```
+
+
+You should see output like:
+```bash   
+✅ tyres 80 matches schema
+✅ parking (missing amount) matches schema
+```
+
+If any test fails, it will show detailed validation errors.
+
+
+---
+
+## 🛠️ Configuration & Deployment Guide
+
+This section explains **how to set up, deploy, and test** the bot end-to-end — whether you're running locally or on a cloud VPS.
+
+---
+
+### 🌐 1. n8n Workflow Import
+
+You can find the exported n8n workflow in:
+
+📂 [`workflow/driver-expenses-bot.json`](workflow/driver-expenses-bot.json)
+
+To use it:
+
+1. Open your **n8n Editor UI**
+2. Click the **hamburger menu (☰)** → **Import Workflow**
+3. Upload the exported JSON file
+4. Paste the JS code from [`docs/code-node-snippet.js`](docs/code-node-snippet.js) into the **Code** node
+
+✅ Make sure your **Telegram**, **OpenAI**, and **Google Sheets** credentials are added under **Credentials** in n8n.
+
+---
+
+### 🤖 2. Telegram Bot Setup
+
+You need a Telegram bot to interact with the automation.
+
+**Steps:**
+
+1. Open Telegram and talk to [@BotFather](https://t.me/BotFather)
+2. Create a new bot and copy the **API token**
+3. In **n8n**, add new Telegram credentials using that token
+4. Start a chat with your bot on Telegram so it can receive messages
+
+---
+
+### 🔑 3. OpenAI API Setup
+
+Used for parsing expense messages like `fuel 40` or `parking`.
+
+**Steps:**
+
+1. Go to [platform.openai.com](https://platform.openai.com/account/api-keys)
+2. Create an API key
+3. Add this key as a credential in **n8n**
+4. It will be used in the **OpenAI** node inside the workflow
+
+---
+
+### 📊 4. Google Sheets API Setup
+
+The expenses are logged to a Google Sheet.
+
+**Steps:**
+
+1. Create a Google Sheet with this header row (Row 1):
+
+   ```text
+   Date (ISO) | Personal/Business | Description | Amount (GBP) | Type
+
+2. Go to [Google Cloud Console](https://console.cloud.google.com/)
+
+3. Create a **Service Account** with **Editor** access to Google Sheets
+
+4. Share the spreadsheet with the service account’s email
+
+5. Upload your **service account JSON key** to n8n and create new **Google Sheets credentials**
+
+✅ Or import [`docs/sample-sheet.csv`](docs/sample-sheet.csv) as a template.
+
+---
+
+### 🖥️ 5. Deployment (Docker + Caddy + VPS)
+
+This project was deployed on a **Google Cloud VM (Ubuntu)** using:
+
+**Docker Compose** – to run n8n
+
+**Caddy** – as a reverse proxy with auto HTTPS
+
+[sslip.io](https://sslip.io/) – to create a hostname based on the IP
+
+🔗 Example URL:
+[https://35-214-93-205.sslip.io/workflow/zptVWHkZ1Orx69w2](https://35-214-93-205.sslip.io/workflow/zptVWHkZ1Orx69w2)
+
+💡 **Deployment Alternatives**
+
+| Option      | Description                                                                 |
+|-------------|-----------------------------------------------------------------------------|
+| **Localhost** | Run with Docker Compose on your own machine. Access via `http://localhost:5678` |
+| **Other VPS** | Works with providers like DigitalOcean, Hetzner, or any Docker-compatible host |
+| **n8n.cloud** | Use the official hosted version of n8n — no Docker or server needed         |
+
+---
+
+
+## 🧪 Testing
+
+
+For validation and end-to-end testing instructions, see the dedicated guide:
+
+
+📄 [Testing Guide](testing.md)
+
+
+---
+
+🧪 **Local Testing**
+
+If you want to test locally (without full deployment):
+
+1. Run `n8n` using Docker:
+   ```bash
+   docker run -it --rm -p 5678:5678 n8nio/n8n
+
+2. Use **ngrok** to expose your port to Telegram:
+   ```bash
+   ngrok http 5678
+
+3. Update the **Webhook URL** in Telegram to use the `ngrok` HTTPS address
+
+⚠️ **Note**: Free `ngrok` sessions reset every time you restart it, which means your Telegram Webhook URL will change.
+If you want a **persistent URL**, you’ll need a paid `ngrok` plan or an alternative tunneling tool.
 
 ---
 
@@ -107,7 +339,10 @@ MIT License
 
 ## 🎓 Academic Note
 
-Project developed for **Professional Development module** at **Elizabeth School of London**, in partnership with **Newcastle College Group**.
+This project was developed as part of the **Professional Development module** at **Elizabeth School of London**, in partnership with **Newcastle College Group** (NCG).
 
-* [🔗 GitHub Repo](https://github.com/NicSterian/driver-expenses-bot)
-* [🔗 LinkedIn](https://www.linkedin.com/in/nicolae-sterian)
+- [🔗 GitHub Repo](https://github.com/NicSterian/driver-expenses-bot)
+- [🔗 LinkedIn Profile](https://www.linkedin.com/in/nicolae-sterian)
+- 📎 CV available on LinkedIn or on request
+
+---
