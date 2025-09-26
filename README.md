@@ -128,6 +128,16 @@ Date | Personal/Business | Description | Amount | Type
 
 ---
 
+## 🧪 Troubleshooting
+
+| Error | Fix |
+|------|-----|
+| `No columns found` | Ensure Sheet has header row + service account has Editor access |
+| `IF node type mismatch` | Enable “Convert types where required” |
+| Chat ID missing | Use `{{$json._chat_id}}` or `{{$node["Telegram Trigger"].json.message.chat.id}}` |
+
+---
+
 ## ❓ Clarifying Questions
 
 If the user message is incomplete (e.g., missing amount), the bot asks one follow-up question like:
@@ -145,16 +155,6 @@ When the user replies (e.g., `50`), the system completes the previous entry.
 - ✅ Minimum permissions for Google service accounts
 - ⚠️ Remind users that their data is being stored (ethical design)
 - 🛑 Currently designed for **personal** use only – not multi-user
-
----
-
-## 🧪 Troubleshooting
-
-| Error | Fix |
-|------|-----|
-| `No columns found` | Ensure Sheet has header row + service account has Editor access |
-| `IF node type mismatch` | Enable “Convert types where required” |
-| Chat ID missing | Use `{{$json._chat_id}}` or `{{$node["Telegram Trigger"].json.message.chat.id}}` |
 
 ---
 
