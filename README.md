@@ -298,6 +298,7 @@ If you want to test locally (without full deployment):
    ngrok http 5678
 
 3. Update the **Webhook URL** in Telegram to use the `ngrok` HTTPS address
+
 ⚠️ **Note**: Free `ngrok` sessions reset every time you restart it, which means your Telegram Webhook URL will change.
 If you want a **persistent URL**, you’ll need a paid `ngrok` plan or an alternative tunneling tool.
 
