@@ -149,38 +149,41 @@ Click to view key parts of the automation:
 
 ---
 
-📦 Local Testing Instructions
+##📦 Local Testing Instructions
 
 Want to verify the schema output yourself?
 
-🛠️ Prerequisites:
+🛠️ *Prerequisites*:
 
 Node.js v20+
 
 Git
 
-🧪 Run the test fixtures
+##🧪 Run the test fixtures
 
 These test cases check that the AI output (JSON) matches the expected schema:
 
-# 1. Clone the repo
-git clone https://github.com/NicSterian/driver-expenses-bot.git
-cd driver-expenses-bot
+### 1. Clone the repo
+    ```bash
+    git clone https://github.com/NicSterian/driver-expenses-bot.git
+    cd driver-expenses-bot
 
-# 2. Install dependencies
-npm install
+### 2. Install dependencies
+    ```bash
+    npm install
 
-# 3. Run tests
-npm test
+### 3. Run tests
+    ```bash
+    npm test
 
 
 ✅ Alternatively, run manually:
-
-node tests/validate-fixtures.mjs
+    ```bash
+    node tests/validate-fixtures.mjs
 
 
 You should see output like:
-
+    ```graphql
 ✅ tyres 80 matches schema
 ✅ parking (missing amount) matches schema
 
