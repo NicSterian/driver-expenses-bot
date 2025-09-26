@@ -1,14 +1,20 @@
 import fs from "node:fs";
-import Ajv2020 from "ajv/dist/2020.js"; // <-- Use Ajv2020 to support draft 2020-12
+
+// Use Ajv 2020 (draft-2020-12)
+import Ajv2020 from "ajv/dist/2020.js";
+
+// Explicitly add the JSON Schema 2020-12 meta (defensive for CI)
+import meta2020 from "ajv/dist/refs/json-schema-2020-12.json" assert { type: "json" };
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });
+ajv.addMetaSchema(meta2020);
 
 const schema = JSON.parse(fs.readFileSync("prompts/expense.schema.json", "utf8"));
 const validate = ajv.compile(schema);
 
 const cases = [
   ["tests/fixtures/tyres_80.out.json", "tyres 80"],
-  ["tests/fixtures/parking_missing_amount.out.json", "parking (missing amount)"]
+  ["tests/fixtures/parking_missing_amount.out.json", "parking (missing amount)"],
 ];
 
 let failures = 0;
@@ -24,4 +30,3 @@ for (const [file, name] of cases) {
 }
 
 process.exit(failures ? 1 : 0);
-
