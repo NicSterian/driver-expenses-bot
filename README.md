@@ -152,16 +152,26 @@ When the user replies (e.g., `50`), the system completes the previous entry.
 
 Click to view key parts of the automation:
 
-- ![n8n Workflow](docs/screenshots/n8n_workflow.jpg)
-- ![Telegram Interaction](docs/screenshots/telegram_interaction.png)
-- ![Clarification](docs/screenshots/telegram_clarification.jpg)
-- ![Google Sheets](docs/screenshots/google_sheets_data.png)
-- ![Prompt](docs/screenshots/ai_agent_prompt.jpg)
-- ![AI Output](docs/screenshots/ai_agent_output.jpg)
-- ![JSON Clarification](docs/screenshots/json_output_clarification.jpg)
+![n8n Workflow](docs/screenshots/n8n_workflow.jpg)  
+*The full n8n pipeline: Telegram Trigger → OpenAI (AI Agent) → Code (normalize/validate) → IF (needs clarification?) → Google Sheets (append) → Telegram (confirm).*
 
+![Telegram Interaction](docs/screenshots/telegram_interaction.png)  
+*“Happy path” example — user sends `tyres 80`, the bot parses it and confirms the logged expense.*
 
+![Clarification](docs/screenshots/telegram_clarification.jpg)  
+*When a message is incomplete (e.g., `parking` with no amount), the bot asks a single follow-up: “What was the amount (GBP)?”*
 
+![Google Sheets](docs/screenshots/google_sheets_data.png)  
+*Destination sheet with the required headers and appended rows (date, P/B, description, amount, type).*
+
+![Prompt](docs/screenshots/ai_agent_prompt.jpg)  
+*The system prompt shown in the AI node — defines the extraction rules and allowed categories.*
+
+![AI Output](docs/screenshots/ai_agent_output.jpg)  
+*Structured JSON returned by the AI Agent (e.g., `date_iso`, `personal_or_business`, `amount_gbp`, `type`, etc.).*
+
+![JSON Clarification](docs/screenshots/json_output_clarification.jpg)  
+*Example output where `needs_clarification` is `true` and `clarification_question` guides the follow-up.*
 
 ---
 
