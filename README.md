@@ -174,11 +174,13 @@ cd driver-expenses-bot ```
 
 #### 2. Install dependencies
 ```bash
-npm install ```
+npm install 
+```
 
 ###$ 3. Run tests
 ```bash
-npm test ```
+npm test 
+```
  
 
 ✅ Alternatively, run manually:
@@ -299,11 +301,11 @@ If you want to test locally (without full deployment):
 
 1. Run `n8n` using Docker:
    ```bash
-   docker run -it --rm -p 5678:5678 n8nio/n8n```
+   docker run -it --rm -p 5678:5678 n8nio/n8n
 
 2. Use **ngrok** to expose your port to Telegram:
    ```bash
-   ngrok http 5678```
+   ngrok http 5678
 
 3. Update the **Webhook URL** in Telegram to use the `ngrok` HTTPS address
 
