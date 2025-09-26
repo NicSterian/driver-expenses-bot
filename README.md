@@ -99,16 +99,6 @@ driver-expenses-bot/
 - Google Sheets API + service account with Editor access
 
 ---
-## 💡 Deployment Alternatives
-
-| Option        | Description                                                                     |
-| ------------- | ------------------------------------------------------------------------------- |
-| **Localhost** | Run with Docker Compose on your own machine. Access via `http://localhost:5678` |
-| **Other VPS** | Works with providers like DigitalOcean, Hetzner, or any Docker-compatible host  |
-| **n8n.cloud** | Use the official hosted version of n8n — no Docker or server needed             |
-
-
----
 
 ## 🚀 Quick Setup
 
